@@ -29,9 +29,30 @@ def fetch_all_imgs(from_dir, followlinks=True, file_exts=None):
                 if ext not in file_exts:
                     # logger.debug("exclude file %s,%s" % (name, ext))
                     continue
-            if name.endswith(('jpg', 'png', 'jpeg', 'bmp')):
+            if name.endswith(('jpg', 'png', 'jpeg', 'bmp', 'BMP', 'JPG')):
                 path_join = os.path.join(root, name)
                 all_imgs.append(path_join)
 
     # logger.debug("fetch_all_files count=%s" % len(all_files))
-    return all_dirs, all_imgs
+    return all_imgs
+
+def fetch_all_files(from_dir, followlinks=True, file_exts=None):
+    """
+    获取目录下所有文件
+    """
+    all_files = []
+    all_dirs = []
+    for root, dirs, files in os.walk(from_dir, followlinks=followlinks):
+        if len(dirs) != 0:
+            all_dirs.extend(dirs)
+        for name in files:
+            if file_exts:
+                _, ext = os.path.splitext(name)
+                if ext not in file_exts:
+                    # logger.debug("exclude file %s,%s" % (name, ext))
+                    continue
+            path_join = os.path.join(root, name)
+            all_files.append(path_join)
+
+    # logger.debug("fetch_all_files count=%s" % len(all_files))
+    return all_files

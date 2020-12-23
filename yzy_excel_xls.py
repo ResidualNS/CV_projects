@@ -4,6 +4,9 @@
 import xlrd
 import xlwt
 from xlutils.copy import copy
+'''
+读写xls功能
+'''
 
 class excel_xls():
     def __init__(self):
@@ -34,9 +37,13 @@ class excel_xls():
         #print("xls格式表格[追加]写入数据成功！")
 
     def read_excel_xls(self, path):
+        list_xls = []
         workbook = xlrd.open_workbook(path)  # 打开工作簿
         sheets = workbook.sheet_names()  # 获取工作簿中的所有表格
         worksheet = workbook.sheet_by_name(sheets[0])  # 获取工作簿中所有表格中的的第一个表格
         for i in range(0, worksheet.nrows):
             for j in range(0, worksheet.ncols):
-                print(worksheet.cell_value(i, j), "\t", end="")  # 逐行逐列读取数据
+                list_xls.append(worksheet.cell_value(i, j))
+                #print(worksheet.cell_value(i, j), "\t", end="")  # 逐行逐列读取数据
+
+        return list_xls
