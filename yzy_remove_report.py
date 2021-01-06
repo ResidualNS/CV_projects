@@ -4,12 +4,12 @@
 import os
 import glob
 from shutil import copyfile
-from my_until import *
+from my_utils.my_until import *
 '''
 整理数据集：去除病人文件夹里的报告图片等
 '''
 def remove_file(file_path):
-    all_dirs, all_files = fetch_all_files(file_path)
+    all_files = fetch_all_files(file_path)
     i = 0
     for file in all_files:
         file_name = file.split('\\')[-1]

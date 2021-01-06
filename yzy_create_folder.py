@@ -3,8 +3,8 @@
 # 2020/12/10 9:15
 import re
 from shutil import copyfile
-from my_until import *
-from yzy_excel_xls import *
+from my_utils.my_until import *
+from my_utils.yzy_excel_xls import *
 
 def id_create_folder(path):
     '''
@@ -31,17 +31,20 @@ def id_create_folder(path):
     print('finish：', save_path)
 
 def check_create_folder(path, xls_path):
-    save_path = path.replace('武大人民_终', '武大人民_终2.0' )
+    '''
+    根据表格中的图片名字，搜索原始文件夹图片，写入新的文件夹
+    '''
+    save_path = path.replace('武大人民_终', '武大人民_终2.0')
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     E = excel_xls()
     check_list = E.read_excel_xls(xls_path)
     all_files = fetch_all_imgs(path)
-    n=0
+    n = 0
     for img in all_files:
         img_name = os.path.basename(img)
         if img_name in check_list:
-            image =cv2_imread(img)
+            image = cv2_imread(img)
             img_folder = img.split('\\'+img_name)[0].replace('武大人民_终', '武大人民_终2.0')
             if not os.path.exists(img_folder):
                 os.makedirs(img_folder)
