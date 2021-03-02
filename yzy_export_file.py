@@ -52,7 +52,7 @@ def export_file_imgs(filepath, checkpath, outpath):
             copyfile(img, out_)
     print('{} 去除了 {} 张图片！'.format(img, n))
 
-def remove_xls_img(filepath, checkpath):
+def remove_xls_img(filepath, checkpath, savepath):
     files = fetch_all_imgs(filepath)
     EX = excel_xls()
     check_list = EX.read_excel_xls(checkpath)
@@ -63,6 +63,63 @@ def remove_xls_img(filepath, checkpath):
         if img_name[:-4] in check_list:
             i += 1
             os.remove(img)
+    print(i)
+
+def remove_xls_fold(filepath, checkpath, savepath):
+    '''
+    根据表格案例名移动案例
+    '''
+    EX = excel_xls()
+    check_list = EX.read_excel_xls(checkpath, 0, 1)
+    fold_list = os.listdir(filepath)
+
+    # i = 0
+    # for fold in fold_list:
+    #     fold = '11'
+    #     path1 = os.path.join(filepath, fold)
+    #     fold1_list = os.listdir(path1)
+    #     for fold1 in fold1_list:
+    #         path2 = os.path.join(path1, fold1)
+    #         fold2_list = os.listdir(path2)
+    #         for fold2 in fold2_list:
+    #             path3 = os.path.join(path2, fold2)
+    #             fold3_list = os.listdir(path3)
+    #             for fold_ in fold3_list:
+    #                 if fold_ in check_list:
+    #                     print(fold_)
+    #                     source_path = os.path.join(path3, fold_)
+    #                     target_path = os.path.join(savepath, fold_)
+    #                     if not os.path.exists(target_path):
+    #                         i += 1
+    #                         shutil.copytree(source_path, target_path)
+    # print(i)
+
+    i = 0
+    for fold_ in fold_list:
+        if fold_ in check_list:
+            print(fold_)
+            source_path = os.path.join(filepath, fold_)
+            target_path = os.path.join(savepath, fold_)
+            i += 1
+            shutil.copytree(source_path, target_path)
+    print(i)
+
+def rename_xls_fold(filepath, checkpath, savepath):
+    '''
+    根据表格数字名重命名案例名
+    '''
+    EX = excel_xls()
+    check_list1 = EX.read_excel_xls(checkpath, 0, 1)
+    check_list2 = EX.read_excel_xls(checkpath, 1, 2)
+
+    i = 0
+    for check_1, check_2 in zip(check_list1, check_list2):
+        check_2 = str(int(check_2))
+        print(check_1, check_2)
+        source_path = os.path.join(filepath, check_1)
+        target_path = os.path.join(savepath, check_2)
+        i += 1
+        shutil.copytree(source_path, target_path)
     print(i)
 
 def id_create_folder(path, save_path):
@@ -86,12 +143,12 @@ def id_create_folder(path, save_path):
 
 if __name__ == '__main__':
     # #1
-    filepath = r'E:\徐铭dataset\内外部验证集-原图\宜昌一医'
-    checkpath= r'E:\徐铭dataset\六家医院_终_基线信息\宜昌一医\01有病灶汇总\低风险'
-    outpath = r'E:\徐铭dataset\六家医院_终_基线信息\宜昌一医\00非瘤变'
-    if not os.path.exists(outpath):
-        os.makedirs(outpath)
-    export_file(filepath, checkpath, outpath)
+    # filepath = r'E:\徐铭dataset\内外部验证集-原图\宜昌一医'
+    # checkpath= r'E:\徐铭dataset\六家医院_终_基线信息\宜昌一医\01有病灶汇总\低风险'
+    # outpath = r'E:\徐铭dataset\六家医院_终_基线信息\宜昌一医\00非瘤变'
+    # if not os.path.exists(outpath):
+    #     os.makedirs(outpath)
+    # export_file(filepath, checkpath, outpath)
     # #2
     # filepath = 'E:/徐铭dataset/YOLO特异度测试/无病灶2898'
     # checkpath= 'E:/徐铭dataset/YOLO特异度测试/预测有框'
@@ -103,9 +160,10 @@ if __name__ == '__main__':
     # if not os.path.exists(xls_path):
     #     EX.write_excel_xls(xls _path, sheet_name, sheet_title)
     #3
-    # filepath = r'E:\徐铭dataset\六家医院_终_基线信息\武汉市中心\预测有框_new'
-    # checkpath= r'E:\徐铭dataset\六家医院_终_基线信息\武汉市中心\有病灶高风险-54.xlsx'
-    # remove_xls_img(filepath, checkpath)
+    filepath = r'E:\泽华dataset\图文报告系统\奥巴案例\3评图案例原始report文件夹\内镜精灵\image60'
+    checkpath= r'E:\泽华dataset\图文报告系统\奥巴案例\3评图案例原始report文件夹\内镜精灵\60.xlsx'
+    savepath = r'E:\泽华dataset\图文报告系统\奥巴案例\合格图片优化60例\gt'
+    rename_xls_fold(filepath, checkpath, savepath)
     #4
     # path = r'E:\徐铭dataset\六家医院_终_基线信息\人民医院\01有病灶汇总\805\低风险'
     # path_dir = os.listdir(path)
