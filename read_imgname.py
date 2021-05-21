@@ -46,36 +46,33 @@ def patient_name(xls_path, input_list):
     if not os.path.exists(xls_path):
         EX.write_excel_xls(xls_path, sheet_name, sheet_title)
 
-    for input_ in input_list:
-        id_list = fetch_all_imgs(input_)
-        for id in id_list:
-            print('正在识别病人：', id)
-            basename = os.path.basename(id)
-            base, name = os.path.splitext(basename)
-            newname = base[:-2]+name
-            #id_path = os.path.join(input_, id) # 获取图片路径列表
-            value_ = [[newname], ]
-            EX.write_excel_xls_append(xls_path, value_)  # 病人信息写入表格
+    id_list = fetch_all_imgs(input_list)
+    for id in id_list:
+        print('正在识别病人：', id)
+        basename = os.path.basename(id)
+        value_ = [[basename], ]
+        EX.write_excel_xls_append(xls_path, value_)  # 病人信息写入表格
 
-def patient_folder_name(xls_path, input_list):
+def patient_folder_name(xls_path, input_path):
     """
     获取目录下所有病人的文件夹名
     """
     EX = excel_xls()
     sheet_name = 'sheet1'
-    sheet_title = [["patient_id"], ]
+    sheet_title = [["patient_id", "image_num"], ]
     if not os.path.exists(xls_path):
         EX.write_excel_xls(xls_path, sheet_name, sheet_title)
 
-    id_list = fetch_all_imgs(input_list)
+    id_list = os.listdir(input_path)
     folder_name_list = []
-    for id in id_list:
-        print('正在识别病人：', id)
+    for folder_name in id_list:
+        print('正在识别病人：', folder_name)
         #img_name=os.path.basename(id)
-        id_path = os.path.join(input_list, id) # 获取图片路径列表
-        folder_name = id_path.split('\\')[-2]
         if folder_name not in folder_name_list:
-            value_ = [[folder_name], ]
+            id_path = os.path.join(input_path, folder_name)
+            image_list = os.listdir(id_path)
+            num = len(image_list)
+            value_ = [[folder_name, num], ]
             folder_name_list.append(folder_name)
             EX.write_excel_xls_append(xls_path, value_)  # 病人信息写入表格
 
@@ -92,10 +89,11 @@ def find_patient(xls_path, input_list, output):
     n = 0
     for img in img_list:
         img_name = os.path.basename(img)
+        img_name = img_name[len(img_name.split('_')[0])+1:]
         if img_name in check_list:
             print('正在识别病人：', img)
             n += 1
-            shutil.copyfile(img, os.path.join(output, img_name))
+            shutil.move(img, os.path.join(output, img_name))
     print(n)
 
     # for input_0 in input_list:
@@ -119,8 +117,18 @@ if __name__ == '__main__':
     # input_list = [r"G:\02高风险课题\report\4号台report（无更改版）", r"G:\02高风险课题\report\5号台report"]
     # xls_path = r'E:\徐铭dataset\前瞻性病人\71.xlsx'
     # output = r'E:\徐铭dataset\前瞻性病人\data_71_report'
-    input_list = r'E:\泽华dataset\低风险四分类模型训练+测试用图\息肉+黏膜下病变训练集【无病理】\息肉训练集'
-    xls_path = r'E:\泽华dataset\dataset\res_train\2-息肉_0.05.xls'
-    output = r'E:\泽华dataset\低风险四分类模型训练+测试用图\息肉+黏膜下病变训练集【无病理】\息肉训练集_0.05'
-    find_patient(xls_path, input_list, output)
+
+    input_path = r'E:\张丽辉dataset\图文报告2.0\测试案例24例\risk'
+    xls_path = input_path + r'.xls'
+    patient_name(xls_path, input_path)
+
+    # input_list = r'E:\徐铭dataset\0论文返修\Resnet'
+    # xls_path = r'E:\徐铭dataset\0论文返修\文献.xls'
+    # output = r'E:\徐铭dataset\0论文返修\Resnet_del'
+    # find_patient(xls_path, input_list, output)
+
+    # input_path = r'E:\泽华dataset\图文报告系统\一医院案例\AI留图结果'
+    # xls_path = r'E:\泽华dataset\图文报告系统\一医院案例\50.xls'
+    # patient_folder_name(xls_path, input_path)
+
 print('-----------------')

@@ -4,8 +4,8 @@
 import numpy as np
 import os
 from shutil import copyfile
-from yzy_excel_xls import excel_xls
-from my_until import *
+from my_utils.yzy_excel_xls import excel_xls
+from my_utils.my_until import *
 import pandas as pd
 
 filepath = r'E:\yzy_projects\wl_risk_test\dataset_test\荆门石化特异度高低风险测试\低风险gt'

@@ -160,10 +160,10 @@ if __name__ == '__main__':
     # if not os.path.exists(xls_path):
     #     EX.write_excel_xls(xls _path, sheet_name, sheet_title)
     #3
-    filepath = r'E:\泽华dataset\图文报告系统\奥巴案例\3评图案例原始report文件夹\内镜精灵\image60'
-    checkpath= r'E:\泽华dataset\图文报告系统\奥巴案例\3评图案例原始report文件夹\内镜精灵\60.xlsx'
-    savepath = r'E:\泽华dataset\图文报告系统\奥巴案例\合格图片优化60例\gt'
-    rename_xls_fold(filepath, checkpath, savepath)
+    filepath = r'E:\董泽华dataset\图文报告系统\奥巴案例\2评图案例原始image文件夹\image'
+    checkpath= r'E:\张丽辉dataset\图文报告2.0\测试案例31例\31案例测试.xlsx'
+    savepath = r'E:\张丽辉dataset\图文报告2.0\测试案例31例'
+    remove_xls_fold(filepath, checkpath, savepath)
     #4
     # path = r'E:\徐铭dataset\六家医院_终_基线信息\人民医院\01有病灶汇总\805\低风险'
     # path_dir = os.listdir(path)
