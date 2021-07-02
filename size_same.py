@@ -37,15 +37,16 @@ def size_same(path, save_path):
     for i in range(len(image_list)):
         image = image_list[i]
         image_name = os.path.basename(image)
-        image =cv2_imread(image)
+        image = cv2_imread(image)
         black_image = make_black_img(image)
         size = (224, 224)
-        image_resize = cv2.resize(black_image, size)
+        #image_resize = cv2.resize(black_image, size)
+        image_resize = black_image  # 不resize
         cv2_imwrite(os.path.join(save_path, image_name), image_resize)
         process_bar(i / len(image_list), start_str = '', end_str = '100%', total_length = 10)
 
 if __name__ == '__main__':
-    path = r'E:\朱益洁dataset\resnet\dataset_小肠\test_data\1'
+    path = r'D:\BaiduNetdiskDownload\高风险（低级别及以上）【from胡哥】\image'
     save_path = path+'_size'
     if not os.path.exists(save_path):
         os.makedirs(save_path)

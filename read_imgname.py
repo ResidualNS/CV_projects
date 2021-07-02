@@ -89,7 +89,7 @@ def find_patient(xls_path, input_list, output):
     n = 0
     for img in img_list:
         img_name = os.path.basename(img)
-        img_name = img_name[len(img_name.split('_')[0])+1:]
+        #img_name = img_name[len(img_name.split('_')[0])+1:]
         if img_name in check_list:
             print('正在识别病人：', img)
             n += 1
@@ -118,17 +118,17 @@ if __name__ == '__main__':
     # xls_path = r'E:\徐铭dataset\前瞻性病人\71.xlsx'
     # output = r'E:\徐铭dataset\前瞻性病人\data_71_report'
 
-    input_path = r'E:\张丽辉dataset\图文报告2.0\测试案例24例\risk'
-    xls_path = input_path + r'.xls'
-    patient_name(xls_path, input_path)
+    # input_path = r'E:\张丽辉dataset\表面特征分类\标准测试集\白苔_cut'
+    # xls_path = input_path + r'.xls'
+    # patient_name(xls_path, input_path)
 
-    # input_list = r'E:\徐铭dataset\0论文返修\Resnet'
-    # xls_path = r'E:\徐铭dataset\0论文返修\文献.xls'
-    # output = r'E:\徐铭dataset\0论文返修\Resnet_del'
-    # find_patient(xls_path, input_list, output)
+    input_list = r'E:\朱益洁dataset\数据准备\原图\结构异常_'
+    xls_path = r'E:\朱益洁dataset\数据准备\原图\训练集-异常.xlsx'
+    output = r'E:\朱益洁dataset\数据准备\原图\结构异常_size'
+    find_patient(xls_path, input_list, output)
 
-    # input_path = r'E:\泽华dataset\图文报告系统\一医院案例\AI留图结果'
-    # xls_path = r'E:\泽华dataset\图文报告系统\一医院案例\50.xls'
+    # input_path = r'E:\徐铭dataset\前瞻性new\东院重跑108'
+    # xls_path = r'E:\徐铭dataset\前瞻性new\东院重跑108.xls'
     # patient_folder_name(xls_path, input_path)
 
 print('-----------------')

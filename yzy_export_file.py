@@ -75,7 +75,6 @@ def remove_xls_fold(filepath, checkpath, savepath):
 
     # i = 0
     # for fold in fold_list:
-    #     fold = '11'
     #     path1 = os.path.join(filepath, fold)
     #     fold1_list = os.listdir(path1)
     #     for fold1 in fold1_list:
@@ -91,7 +90,7 @@ def remove_xls_fold(filepath, checkpath, savepath):
     #                     target_path = os.path.join(savepath, fold_)
     #                     if not os.path.exists(target_path):
     #                         i += 1
-    #                         shutil.copytree(source_path, target_path)
+    #                         shutil.move(source_path, target_path)
     # print(i)
 
     i = 0
@@ -101,7 +100,7 @@ def remove_xls_fold(filepath, checkpath, savepath):
             source_path = os.path.join(filepath, fold_)
             target_path = os.path.join(savepath, fold_)
             i += 1
-            shutil.copytree(source_path, target_path)
+            shutil.move(source_path, target_path)
     print(i)
 
 def rename_xls_fold(filepath, checkpath, savepath):
@@ -160,9 +159,9 @@ if __name__ == '__main__':
     # if not os.path.exists(xls_path):
     #     EX.write_excel_xls(xls _path, sheet_name, sheet_title)
     #3
-    filepath = r'E:\董泽华dataset\图文报告系统\奥巴案例\2评图案例原始image文件夹\image'
-    checkpath= r'E:\张丽辉dataset\图文报告2.0\测试案例31例\31案例测试.xlsx'
-    savepath = r'E:\张丽辉dataset\图文报告2.0\测试案例31例'
+    filepath = r'E:\徐铭dataset\前瞻性病人\data_5'
+    checkpath= r'E:\徐铭dataset\前瞻性病人\9.xlsx'
+    savepath = r'E:\董泽华dataset\图文报告系统\内外部验证案例\补充瘤变去年\image'
     remove_xls_fold(filepath, checkpath, savepath)
     #4
     # path = r'E:\徐铭dataset\六家医院_终_基线信息\人民医院\01有病灶汇总\805\低风险'

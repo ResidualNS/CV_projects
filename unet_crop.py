@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image
 from my_utils.mini_unet_model import mini_unet_model
 from my_utils.model_encrypt import decrypt_file
+from my_utils.my_until import *
 
 sys.path.insert(0, r'E:\yzy_projects\znyx-trainer\trainer')
 
@@ -124,8 +125,8 @@ if __name__ == '__main__':
     model = mini_unet_model()
     dec_file = decrypt_file(file, file_handle = True)
     load_weights_from_hdf5_group(dec_file, model.layers)
-    test_img_path = r"E:\泽华dataset\低风险四分类模型训练+测试用图\溃疡lyx"
-    result_path = r"E:\泽华dataset\低风险四分类模型训练+测试用图\溃疡lyx_crop"
+    test_img_path = r"\\192.168.0.142\work_yzy\SfMLearner-master\data\resulting\formatted\data_input"
+    result_path = r"\\192.168.0.142\work_yzy\SfMLearner-master\data\resulting\formatted\data_input_crop"
 
     # 参数设置
     img_size = (256, 256)
@@ -147,7 +148,7 @@ if __name__ == '__main__':
         if not os.path.exists(result_case_dir_path):
             os.makedirs(result_case_dir_path)
 
-        images = [img for img in os.listdir(case_dir_path)]
+        images = fetch_all_imgs(case_dir_path)
         print(case_dir_path)
 
         for img in images:
@@ -155,5 +156,5 @@ if __name__ == '__main__':
             x_h,y_h,w_h,h_h = 0, 0, 0, 0
             img2video, img2jpg, (x1, y1, w1, h1) = process_img(model, image_np, img_size, is_stable, change_value, x_h,y_h,w_h,h_h, fast_flag=False)
             x_h,y_h,w_h,h_h = x1, y1, w1, h1
-            io.imsave(os.path.join(result_case_dir_path, img[:-4] + '.jpg'), img2jpg[:, :, :: -1])
+            io.imsave(os.path.join(result_case_dir_path, img.split('\\')[-1][:-4] + '.jpg'), img2jpg[:, :, :: -1])
 print('-------------')
