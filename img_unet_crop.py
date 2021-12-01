@@ -1,34 +1,30 @@
 # -*- coding: utf-8 -*-
 # __author__:YZY
 # 2021/4/15 11:19
-
-import os
 import sys
 import io
-import cv2
 import skimage.transform as trans
-import shutil
-import numpy as np
 from PIL import Image
 from my_utils.mini_unet_model import mini_unet_model
 from my_utils.model_encrypt import decrypt_file
-from my_utils.my_until import *
+from my_utils.my_util import *
 
 sys.path.insert(0, r'E:\yzy_projects\znyx-trainer\trainer')
 
 from mbsh.core.unet.data import *
 from mbsh.core.unet_pp.segmentation_models import Unet, Xnet
 from mbsh.core.images import save_img_file
-
 from keras.engine.topology import load_weights_from_hdf5_group
+
+"""
+mini-unet 图像裁边+补黑边
+"""
 
 def take_length(elem):
     return len(elem)
 
+
 def resize_image(img, size):
-    """
-    resize 保持原图的长宽比
-    """
     image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     iw, ih = image.size
     w, h = size
@@ -44,7 +40,8 @@ def resize_image(img, size):
 
 
 def imgread(img_path):
-    return cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
+    return cv2.imdecode(np.fromfile(img_path, dtype = np.uint8), 1)
+
 
 def process_img(model, src_img, img_size, is_stable=False, change_value=None, x_h=0, y_h=0, w_h=0, h_h=0,
                 fast_flag=False):
@@ -119,27 +116,45 @@ def process_img(model, src_img, img_size, is_stable=False, change_value=None, x_
     return srcbak, img_out, (x1, y1, w1, h1)
 
 
+def make_black_img(src_img):
+    img = src_img.copy()
+    src_h = img.shape[0]
+    src_w = img.shape[1]
+    max_size = max(src_w, src_h)
+    black_img = np.zeros([max_size, max_size, 3], np.uint8)
+
+    if src_w > src_h:
+        y1_del = int((src_w - src_h) / 2)
+        y2_del = y1_del + src_h
+        black_img[y1_del:y2_del, 0:src_w] = src_img
+
+    elif src_h > src_w:
+        x1_del = int((src_h - src_w) / 2)
+        x2_del = x1_del + src_w
+        black_img[0:src_h, x1_del:x2_del] = src_img
+    else:
+        black_img = src_img
+    return black_img
+
+
 if __name__ == '__main__':
-    ### load encrypted model trained by zhangkuo
-    file = r"E:\yzy_projects\model_data\裁边模型\u_model1.h5.e"
+    file = r"E:\yzy_projects\model_data\模型_其他\裁边模型\u_model1.h5.e"
     model = mini_unet_model()
     dec_file = decrypt_file(file, file_handle = True)
     load_weights_from_hdf5_group(dec_file, model.layers)
-    test_img_path = r"\\192.168.0.142\work_yzy\SfMLearner-master\data\resulting\formatted\data_input"
-    result_path = r"\\192.168.0.142\work_yzy\SfMLearner-master\data\resulting\formatted\data_input_crop"
+
+    test_img_path = r"E:\宫德馨dataset\数据准备\褪色调\新建文件夹"
+    result_path = test_img_path + r"_crop"
 
     # 参数设置
     img_size = (256, 256)
-
     # input_size
     input_size = img_size + (3,)
-
     # unet or unet++
     use_unet = False
-
     # 是否开启保持稳定的策略， x,y,w,h 变化大于一定值才更新
     is_stable = True
-    change_value = 20   # x,y,w,h 任一值变化大于10 像素才更新
+    change_value = 20  # x,y,w,h 任一值变化大于10 像素才更新
 
     for case in os.listdir(test_img_path):
         case_dir_path = os.path.join(test_img_path, case)
@@ -152,9 +167,16 @@ if __name__ == '__main__':
         print(case_dir_path)
 
         for img in images:
-            image_np = imgread(os.path.join(case_dir_path, img))
-            x_h,y_h,w_h,h_h = 0, 0, 0, 0
-            img2video, img2jpg, (x1, y1, w1, h1) = process_img(model, image_np, img_size, is_stable, change_value, x_h,y_h,w_h,h_h, fast_flag=False)
-            x_h,y_h,w_h,h_h = x1, y1, w1, h1
-            io.imsave(os.path.join(result_case_dir_path, img.split('\\')[-1][:-4] + '.jpg'), img2jpg[:, :, :: -1])
+            try:
+                print(img)
+                image_np = imgread(os.path.join(case_dir_path, img))
+                x_h, y_h, w_h, h_h = 0, 0, 0, 0
+                img2video, img2jpg, (x1, y1, w1, h1) = process_img(model, image_np, img_size, is_stable, change_value,
+                                                                   x_h, y_h, w_h, h_h, fast_flag = False)
+                x_h, y_h, w_h, h_h = x1, y1, w1, h1
+                img_out = make_black_img(img2jpg)
+
+                io.imsave(os.path.join(result_case_dir_path, img.split('\\')[-1][:-4] + '.jpg'), img_out[:, :, :: -1])
+            except:
+                print('异常', img)
 print('-------------')

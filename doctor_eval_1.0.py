@@ -3,11 +3,11 @@
 # 2021/1/30 9:39
 import re
 from shutil import copyfile
-from my_utils.my_until import *
+from my_utils.my_util import *
 from my_utils.yzy_excel_xls import *
 import random
 '''
-图文1.0:评图数据库
+图文1.0:医生评图
 '''
 
 def remove_report(file_path, saves_path, file2_path=None, file3_path=None):
@@ -116,25 +116,26 @@ if __name__ == '__main__':
     '''
     1、AI留图结果
     '''
-    # file_path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第五批\part_result'
-    # file2_path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第五批\biopsy_result'
-    # file3_path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第五批\risk_result'
-    # saves_path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第五批\随机评图\AI留图'
+    # path = r'E:\董泽华dataset\图文报告系统\内外部验证案例\补充瘤变案例'
+    # file_path = path + r'\part_result'
+    # file2_path = path + r'\biopsy_result'
+    # file3_path = path + r'\risk_result'
+    # saves_path = path + r'\随机评图\AI留图'
     # remove_report(file_path, saves_path, file2_path = file2_path, file3_path = file3_path)
 
     '''
     2、图片尺寸归一化并重命名
     '''
-    # path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第五批\随机评图\AI留图'
+    # path = r'E:\董泽华dataset\图文报告系统\内外部验证案例\补充瘤变案例\随机评图\医生采图'
     # save_path = path + '_resize'
     # random_imgname(path, save_path)
 
     '''
     3、文件夹名打乱随机评图
     '''
-    path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第四批\随机评图\110'
+    path = r'E:\董泽华dataset\图文报告系统\内外部验证案例\补充瘤变案例\随机评图\54'
     save_path = path + '_random_result'
-    xlsx_input_path = r'E:\董泽华dataset\图文报告系统\本院前瞻性案例\第四批\随机评图\55+55.xlsx'
+    xlsx_input_path = r'E:\董泽华dataset\图文报告系统\内外部验证案例\补充瘤变案例\随机评图\27+27.xlsx'
     xlsx_save_path = path + '.xls'
     random_folername(path, save_path, xlsx_input_path, xlsx_save_path)
 print('-----------------------------------')

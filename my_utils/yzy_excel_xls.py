@@ -36,13 +36,13 @@ class excel_xls():
         new_workbook.save(path)  # 保存工作簿
         #print("xls格式表格[追加]写入数据成功！")
 
-    def read_excel_xls(self, path):
+    def read_excel_xls(self, path, ncols_0=0, ncols_1=1):
         list_xls = []
         workbook = xlrd.open_workbook(path)  # 打开工作簿
         sheets = workbook.sheet_names()  # 获取工作簿中的所有表格
         worksheet = workbook.sheet_by_name(sheets[0])  # 获取工作簿中所有表格中的的第一个表格
         for i in range(0, worksheet.nrows):
-            for j in range(0, worksheet.ncols):
+            for j in range(ncols_0, ncols_1):
                 list_xls.append(worksheet.cell_value(i, j))
                 #print(worksheet.cell_value(i, j), "\t", end="")  # 逐行逐列读取数据
 

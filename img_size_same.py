@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 # __author__:YZY
 # 2021/3/11 14:13
-import re
-import time
-from shutil import copyfile
-from my_utils.my_until import *
-from my_utils.yzy_excel_xls import *
-
+from my_utils.my_util import *
+"""
+图片补黑边
+"""
 def process_bar(percent, start_str='', end_str='', total_length=0):
     bar = ''.join(["\033[31m%s\033[0m"%'   '] * int(percent * total_length)) + ''
     bar = '\r' + start_str + bar.ljust(total_length) + ' {:0>4.1f}%|'.format(percent*100) + end_str
@@ -39,15 +37,18 @@ def size_same(path, save_path):
         image_name = os.path.basename(image)
         image = cv2_imread(image)
         black_image = make_black_img(image)
-        size = (224, 224)
-        #image_resize = cv2.resize(black_image, size)
+        #size = (512, 512)
+        #image_resize = cv2.resize(black_image, size)  # resize
         image_resize = black_image  # 不resize
         cv2_imwrite(os.path.join(save_path, image_name), image_resize)
         process_bar(i / len(image_list), start_str = '', end_str = '100%', total_length = 10)
 
 if __name__ == '__main__':
-    path = r'D:\BaiduNetdiskDownload\高风险（低级别及以上）【from胡哥】\image'
-    save_path = path+'_size'
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-    size_same(path, save_path)
+    path = r'D:\0-杜泓柳\数据集三 内部连续患者'
+    case_list = os.listdir(path)
+    for case in case_list:
+        case_path = os.path.join(path, case)
+        save_path = case_path + '_size'
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+        size_same(case_path, save_path)
